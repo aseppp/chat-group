@@ -85,7 +85,7 @@ const getChannel = async (request, h) => {
       .response({
         status: 'sucess',
         message: 'success fetching data',
-        rsult: {
+        result: {
           channel,
         },
       })
@@ -114,7 +114,7 @@ const deleteChannel = async (request, h) => {
       .response({
         status: 'sucess',
         message: 'success delete data',
-        rsult: {
+        result: {
           channel,
         },
       })
@@ -149,7 +149,7 @@ const updateChannel = async (request, h) => {
       .response({
         status: 'sucess',
         message: 'success update data',
-        rsult: {
+        result: {
           channel,
         },
       })
