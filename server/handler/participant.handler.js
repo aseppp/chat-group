@@ -5,9 +5,13 @@ const addParticipan = async (request, h) => {
   const { userId, channelId } = request.payload;
 
   try {
-    const existUser = await prisma.participant.findFirst({
+    const existUser = await prisma.channel.findFirst({
       where: {
-        userId: userId,
+        users: {
+          some: {
+            userId: userId,
+          },
+        },
       },
     });
 
