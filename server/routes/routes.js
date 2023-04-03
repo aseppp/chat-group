@@ -6,6 +6,12 @@ const {
   updateChannel,
   deleteChannel,
 } = require('../handler/channel.handler');
+const {
+  addParticipan,
+  removeParticipant,
+  getParticipants,
+  getParticipantByChannel,
+} = require('../handler/participant.handler');
 
 const routes = [
   // AUTH ROUTES
@@ -45,6 +51,28 @@ const routes = [
     method: 'DELETE',
     path: '/channel/{id}',
     handler: deleteChannel,
+  },
+
+  // PARTICIPAN ROUTES
+  {
+    method: 'POST',
+    path: '/participant',
+    handler: addParticipan,
+  },
+  {
+    method: 'POST',
+    path: '/participant/leave',
+    handler: removeParticipant,
+  },
+  {
+    method: 'GET',
+    path: '/participants',
+    handler: getParticipants,
+  },
+  {
+    method: 'GET',
+    path: '/participant/{id}',
+    handler: getParticipantByChannel,
   },
 ];
 
