@@ -33,9 +33,9 @@ model Channel {
 
 model Participant {
   id        String  @id @default(cuid())
-  userId    String
+  userId    String  @unique
   user      User    @relation(references: [id], fields: [userId], onDelete: Cascade, onUpdate: Cascade)
-  channelId String
+  channelId String  @unique
   channel   Channel @relation(references: [id], fields: [channelId], onDelete: Cascade, onUpdate: Cascade)
 }
 

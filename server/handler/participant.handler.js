@@ -35,6 +35,35 @@ const addParticipan = async (request, h) => {
           participant,
         },
       })
+      .code(201);
+  } catch (error) {
+    console.log(error);
+    return h
+      .response({
+        status: 'error',
+        message: 'server error!',
+      })
+      .code(500);
+  }
+};
+
+const removeParticipant = async (request, h) => {
+  const { id } = req.params;
+  try {
+    const participant = await prisma.participant.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return h
+      .response({
+        status: 'sucess',
+        message: 'success leave channel',
+        result: {
+          participant,
+        },
+      })
       .code(200);
   } catch (error) {
     console.log(error);
@@ -47,4 +76,62 @@ const addParticipan = async (request, h) => {
   }
 };
 
-module.exports = { addParticipan };
+const getParticipants = async (request, h) => {
+  try {
+    const participants = await prisma.participant.findMany();
+    return h
+      .response({
+        status: 'sucess',
+        message: 'success fetching data',
+        result: {
+          participants,
+        },
+      })
+      .code(200);
+  } catch (error) {
+    console.log(error);
+    return h
+      .response({
+        status: 'error',
+        message: 'server error!',
+      })
+      .code(500);
+  }
+};
+
+const getParticipantByChannel = async (request, h) => {
+  const { channelId } = request.params;
+
+  try {
+    const participant = await prisma.participant.findUnique({
+      where: {
+        channelId: channelId,
+      },
+    });
+
+    return h
+      .response({
+        status: 'sucess',
+        message: 'success fetching data',
+        result: {
+          participant,
+        },
+      })
+      .code(200);
+  } catch (error) {
+    console.log(error);
+    return h
+      .response({
+        status: 'error',
+        message: 'server error!',
+      })
+      .code(500);
+  }
+};
+
+module.exports = {
+  addParticipan,
+  removeParticipant,
+  getParticipants,
+  getParticipantByChannel,
+};
