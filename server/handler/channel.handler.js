@@ -89,6 +89,20 @@ const getChannel = async (request, h) => {
       where: {
         id: id,
       },
+      include: {
+        messages: {
+          select: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                avatar: true,
+              },
+            },
+            text: true,
+          },
+        },
+      },
     });
 
     return h

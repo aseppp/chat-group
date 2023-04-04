@@ -6,6 +6,7 @@ const {
   updateChannel,
   deleteChannel,
 } = require('../handler/channel.handler');
+const { sendMessage, deleteMessage } = require('../handler/message.handler');
 const {
   addParticipan,
   removeParticipant,
@@ -73,6 +74,18 @@ const routes = [
     method: 'GET',
     path: '/participants/{channelId}',
     handler: getParticipantByChannel,
+  },
+
+  // MESSAGE ROUTES
+  {
+    method: 'POST',
+    path: '/message',
+    handler: sendMessage,
+  },
+  {
+    method: 'DELETE',
+    path: '/message/{id}',
+    handler: deleteMessage,
   },
 ];
 
