@@ -26,15 +26,16 @@ model Channel {
   id          String        @id @default(cuid())
   title       String        @unique
   description String
-  users       Participant[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
+  users       Participant[]
+  message     Message[]
 }
 
 model Participant {
-  userId    String 
+  userId    String
   user      User    @relation(references: [id], fields: [userId], onDelete: Cascade, onUpdate: Cascade)
-  channelId String 
+  channelId String
   channel   Channel @relation(references: [id], fields: [channelId], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([userId, channelId])
@@ -45,6 +46,8 @@ model Message {
   text      String
   authorId  String
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  channelId String
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
