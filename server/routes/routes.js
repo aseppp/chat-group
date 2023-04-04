@@ -71,7 +71,7 @@ const routes = [
   },
   {
     method: 'GET',
-    path: '/participant/{id}',
+    path: '/participants/{channelId}',
     handler: getParticipantByChannel,
   },
 ];

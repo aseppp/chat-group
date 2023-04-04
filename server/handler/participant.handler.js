@@ -10,6 +10,7 @@ const addParticipan = async (request, h) => {
         users: {
           some: {
             userId: userId,
+            channelId: channelId,
           },
         },
       },
@@ -28,6 +29,10 @@ const addParticipan = async (request, h) => {
       data: {
         userId: userId,
         channelId: channelId,
+      },
+      include: {
+        user: true,
+        channel: true,
       },
     });
 
@@ -52,11 +57,14 @@ const addParticipan = async (request, h) => {
 };
 
 const removeParticipant = async (request, h) => {
-  const { id } = req.params;
+  const { userId, channelId } = request.payload;
   try {
     const participant = await prisma.participant.delete({
       where: {
-        id: id,
+        userId_channelId: {
+          userId: userId,
+          channelId: channelId,
+        },
       },
     });
 
@@ -107,9 +115,18 @@ const getParticipantByChannel = async (request, h) => {
   const { channelId } = request.params;
 
   try {
-    const participant = await prisma.participant.findUnique({
+    const participant = await prisma.participant.findMany({
       where: {
         channelId: channelId,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            username: true,
+            avatar: true,
+          },
+        },
       },
     });
 

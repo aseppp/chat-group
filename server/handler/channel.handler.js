@@ -49,7 +49,17 @@ const createChannel = async (request, h) => {
 
 const getChannels = async (request, h) => {
   try {
-    const channels = await prisma.channel.findMany();
+    const channels = await prisma.channel.findMany({
+      include: {
+        users: {
+          select: {
+            user: true,
+            channel: true,
+          },
+        },
+        // channel: true,
+      },
+    });
 
     return h
       .response({
