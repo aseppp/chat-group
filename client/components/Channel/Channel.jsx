@@ -1,7 +1,7 @@
 import { Box, Text, Image } from '@chakra-ui/react';
 import React from 'react';
 
-const Channel = ({ title, description, username, members }) => {
+const Channel = ({ title, description, members }) => {
   return (
     <>
       <Box>
@@ -20,8 +20,8 @@ const Channel = ({ title, description, username, members }) => {
                   <Image
                     borderRadius="7px"
                     boxSize="40px"
-                    src="https://bit.ly/dan-abramov"
-                    alt="Dan Abramov"
+                    src={item.user.avatar}
+                    alt=""
                   />
 
                   <Text

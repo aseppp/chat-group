@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
-import { setToken } from '@/utils';
+import { setToken, setUser } from '@/utils';
 
 const Index = () => {
   const router = useRouter();
@@ -56,6 +56,7 @@ const Index = () => {
         .then(data => {
           console.log(data);
           setToken(data.result.token);
+          setUser(JSON.stringify(data.result.user));
           router.push('/');
         });
     }
@@ -144,7 +145,7 @@ const Index = () => {
                 </Button>
 
                 <Box mt={5}>
-                  <Text textAlign="center">
+                  <Box textAlign="center">
                     {open ? 'Already have account ? ' : "Don't have account ? "}{' '}
                     <Box
                       onClick={() => {
@@ -156,7 +157,7 @@ const Index = () => {
                     >
                       {open ? 'Sign In' : 'Sign Up'}
                     </Box>
-                  </Text>
+                  </Box>
                 </Box>
               </Box>
             </form>

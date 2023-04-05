@@ -21,6 +21,7 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import ModalAdd from '../Modal/ModalAdd';
 import Channel from '../Channel/Channel';
+import { getUser } from '@/utils';
 
 const Sidebar = () => {
   const [id, setId] = useState(null);
@@ -31,6 +32,8 @@ const Sidebar = () => {
   const bg1 = useColorModeValue('gray.200', '#120F13');
   const bg2 = useColorModeValue('gray.200', '#0B090C');
   const modal = useDisclosure();
+
+  const userData = getUser();
 
   useEffect(() => {
     fetch('http://localhost:5000/channels')
@@ -55,7 +58,6 @@ const Sidebar = () => {
       fetch(`http://localhost:5000/channel/${id}`)
         .then(res => res.json())
         .then(data => {
-          console.log(data);
           setDataChannel(data.result.channel);
         });
     }
@@ -123,9 +125,8 @@ const Sidebar = () => {
         >
           {openDetail ? (
             <Channel
-              title={dataChannel.title}
-              description={dataChannel.description}
-              // description="Pellentesque sagittis elit enim, sit amet ultrices tellus accumsan quis. In gravida mollis purus, at interdum arcu tempor non"
+              title={dataChannel?.title}
+              description={dataChannel?.description}
               members={participants}
             />
           ) : (
@@ -191,11 +192,12 @@ const Sidebar = () => {
             <Image
               borderRadius="7px"
               boxSize="40px"
+              // src={userData.avatar}
               src="https://bit.ly/dan-abramov"
               alt="Dan Abramov"
             />
 
-            <Text>Username</Text>
+            <Text>username</Text>
           </Box>
 
           <Menu>

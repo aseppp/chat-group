@@ -5,3 +5,13 @@ export const setToken = token => {
 export const getToken = token => {
   return localStorage.getItem('token');
 };
+
+export const setUser = data => {
+  return localStorage.setItem('userData', data);
+};
+
+export const getUser = () => {
+  if (typeof window !== 'undefined') {
+    return JSON.parse(localStorage.getItem('userData'));
+  }
+};
