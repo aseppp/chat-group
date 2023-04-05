@@ -1,7 +1,12 @@
 import React from 'react';
 import Head from 'next/head';
+import { Box } from '@chakra-ui/layout';
+import { useColorModeValue } from '@chakra-ui/color-mode';
+import Header from '@/components/Header/Header';
 
 export default function Home() {
+  const bg2 = useColorModeValue('gray.200', '#252329');
+
   return (
     <>
       <Head>
@@ -11,9 +16,9 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1>Hello world</h1>
-      </main>
+      <Box pos={'absolute'} width="100%" pl={'320px'} height="100vh" bg={bg2}>
+        <Header title={'Frontend web masster'} />
+      </Box>
     </>
   );
 }
