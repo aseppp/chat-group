@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, Image } from '@chakra-ui/react';
 import React from 'react';
 
 const Channel = ({ title, description, username, members }) => {
@@ -11,34 +11,34 @@ const Channel = ({ title, description, username, members }) => {
         <Text>{description}</Text>
 
         <Box mt={8}>
-          <Box>
-            <Text>MEMBERS</Text>
+          <Text>MEMBERS</Text>
 
-            {members?.map((item, key) => (
-              <Box
-                key={key}
-                display="flex"
-                alignItems="center"
-                gap={5}
-                cursor="pointer"
-              >
-                <Image
-                  borderRadius="7px"
-                  boxSize="40px"
-                  src="https://bit.ly/dan-abramov"
-                  alt="Dan Abramov"
-                />
+          {members?.length > 0 ? (
+            <Box mt={5} display="flex" flexDirection="column" gap={5}>
+              {members?.map((item, key) => (
+                <Box key={key} display="flex" alignItems="center" gap={5}>
+                  <Image
+                    borderRadius="7px"
+                    boxSize="40px"
+                    src="https://bit.ly/dan-abramov"
+                    alt="Dan Abramov"
+                  />
 
-                <Text
-                  fontSize={'md'}
-                  textTransform="uppercase"
-                  fontWeight="medium"
-                >
-                  {username}
-                </Text>
-              </Box>
-            ))}
-          </Box>
+                  <Text
+                    fontSize={'md'}
+                    textTransform="capitalize"
+                    fontWeight="bold"
+                  >
+                    {item.user.username}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
+          ) : (
+            <Text mt={'56'} fontWeight="bold">
+              No members in this channel
+            </Text>
+          )}
         </Box>
       </Box>
     </>

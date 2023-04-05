@@ -23,8 +23,11 @@ import ModalAdd from '../Modal/ModalAdd';
 import Channel from '../Channel/Channel';
 
 const Sidebar = () => {
+  const [id, setId] = useState(null);
   const [data, setData] = useState();
+  const [dataChannel, setDataChannel] = useState(null);
   const [openDetail, setOpenDetail] = useState(false);
+  const [participants, setParticipants] = useState([]);
   const bg1 = useColorModeValue('gray.200', '#120F13');
   const bg2 = useColorModeValue('gray.200', '#0B090C');
   const modal = useDisclosure();
@@ -37,7 +40,28 @@ const Sidebar = () => {
       });
   }, [setData]);
 
-  console.log(data);
+  useEffect(() => {
+    if (openDetail) {
+      fetch(`http://localhost:5000/participants/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          setParticipants(data.result.participant);
+        });
+    }
+  }, [openDetail]);
+
+  useEffect(() => {
+    if (openDetail) {
+      fetch(`http://localhost:5000/channel/${id}`)
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setDataChannel(data.result.channel);
+        });
+    }
+  }, [openDetail]);
+
+  console.log({ data, participants });
 
   return (
     <>
@@ -99,8 +123,10 @@ const Sidebar = () => {
         >
           {openDetail ? (
             <Channel
-              title={'Frontend master'}
-              description="Pellentesque sagittis elit enim, sit amet ultrices tellus accumsan quis. In gravida mollis purus, at interdum arcu tempor non"
+              title={dataChannel.title}
+              description={dataChannel.description}
+              // description="Pellentesque sagittis elit enim, sit amet ultrices tellus accumsan quis. In gravida mollis purus, at interdum arcu tempor non"
+              members={participants}
             />
           ) : (
             <>
@@ -122,7 +148,10 @@ const Sidebar = () => {
                         alignItems="center"
                         gap={5}
                         cursor="pointer"
-                        onClick={() => setOpenDetail(true)}
+                        onClick={() => {
+                          setId(item.id);
+                          setOpenDetail(true);
+                        }}
                       >
                         <Image
                           borderRadius="7px"
