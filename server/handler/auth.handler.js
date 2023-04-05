@@ -89,7 +89,7 @@ const signIn = async (request, h) => {
       message: 'sign in success',
       result: result,
     });
-    response.code(201);
+    response.code(200);
     return response;
   } catch (error) {
     console.log(error);
