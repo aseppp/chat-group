@@ -1,8 +1,65 @@
-import Head from 'next/head';
 import React, { useState } from 'react';
+import Head from 'next/head';
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Button,
+  Container,
+  FormControl,
+  FormLabel,
+  getToken,
+  Input,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { setToken } from '@/utils';
 
-const index = () => {
+const Index = () => {
+  const router = useRouter();
+  const token = getToken();
   const [open, setOpen] = useState(false);
+  const [isAdd, setIsAdd] = useState(false);
+  const bg = useColorModeValue('white', '#1d1d1d');
+  const { watch, register, handleSubmit } = useForm();
+
+  const onSubmit = async () => {
+    const data = {
+      username: watch('username'),
+      email: watch('email'),
+      password: watch('password'),
+      avatar:
+        'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+    };
+
+    if (open) {
+      await fetch('http://localhost:5000/signUp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then(res => res.json())
+        .then(() => {
+          setIsAdd(!isAdd);
+        });
+    }
+
+    if (!open) {
+      await fetch('http://localhost:5000/signIn', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          setToken(data.result.token);
+          router.push('/');
+        });
+    }
+  };
 
   return (
     <>
@@ -13,76 +70,101 @@ const index = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="w-full h-screen flex items-center justyfy-center bg-slate-50">
-        <div className="w-2/5 m-auto drop-shadow-lg md:p-7 bg-white rounded-lg">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold">Authentication</h1>
-          </div>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width="100%"
+        height="100vh"
+      >
+        <Box
+          shadow="md"
+          rounded={'lg'}
+          paddingY={['3', '10']}
+          paddingX={['0', '8']}
+          bg={bg}
+        >
+          <Container w={['sm']}>
+            <Text
+              mb={isAdd ? 2 : 8}
+              fontSize={['lg', 'lg', '2xl', '2xl']}
+              fontWeight="bold"
+            >
+              Authentication
+            </Text>
 
-          <div>
-            <form>
-              {open ? (
-                <div className="flex flex-col gap-3 my-3">
-                  <label htmlFor="username" className="font-medium">
-                    Username
-                  </label>
-                  <input
-                    type="name"
-                    className="p-3 border-2 rounded-md"
-                    placeholder="username"
+            {isAdd && (
+              <Alert status="success" variant="top-accent" mb={5}>
+                <AlertIcon />
+                Sign Up sucess, please login !
+              </Alert>
+            )}
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Box display="flex" flexDirection="column" gap={5}>
+                {open ? (
+                  <FormControl>
+                    <FormLabel>Username</FormLabel>
+                    <Input
+                      {...register('username')}
+                      type="name"
+                      placeholder="Username"
+                    />
+                  </FormControl>
+                ) : null}
+
+                <FormControl>
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    {...register('email')}
+                    type="email"
+                    placeholder="user@example.com"
                   />
-                </div>
-              ) : null}
+                </FormControl>
 
-              <div className="flex flex-col gap-3 my-3">
-                <label htmlFor="email" className="font-medium">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="user@example.com"
-                  className="p-3 border-2 rounded-md"
-                />
-              </div>
+                <FormControl>
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    {...register('password')}
+                    type="password"
+                    placeholder="password"
+                  />
+                </FormControl>
+              </Box>
 
-              <div className="flex flex-col gap-3 my-3">
-                <label htmlFor="password" className="font-medium">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="p-3 border-2 rounded-md"
-                />
-              </div>
-
-              <div className="my-5">
-                <button
+              <Box mt={8}>
+                <Button
                   type="submit"
-                  className="w-full md:p-3 bg-gray-900 text-white rounded-lg hover:bg-gray-700"
+                  bg="gray.900"
+                  color={'white'}
+                  width="100%"
+                  _hover={{ bg: 'gray.700' }}
                 >
-                  {open ? <p>Sign Up</p> : <p>Sign In</p>}
-                </button>
-              </div>
+                  Submit
+                </Button>
 
-              <div className="flex justify-center">
-                <p>
-                  Don't have account ? {''}
-                  <button
-                    onClick={() => setOpen(!open)}
-                    type="button"
-                    className="font-bold"
-                  >
-                    {open ? 'Sign Up' : 'Sign In'}
-                  </button>
-                </p>
-              </div>
+                <Box mt={5}>
+                  <Text textAlign="center">
+                    {open ? 'Already have account ? ' : "Don't have account ? "}{' '}
+                    <Box
+                      onClick={() => {
+                        setOpen(!open);
+                        setIsAdd(false);
+                      }}
+                      fontWeight="bold"
+                      cursor="pointer"
+                    >
+                      {open ? 'Sign In' : 'Sign Up'}
+                    </Box>
+                  </Text>
+                </Box>
+              </Box>
             </form>
-          </div>
-        </div>
-      </div>
+          </Container>
+        </Box>
+      </Box>
     </>
   );
 };
 
-export default index;
+export default Index;
