@@ -15,7 +15,7 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BiPlus, BiSearchAlt } from 'react-icons/bi';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { ChevronDownIcon } from '@chakra-ui/icons';
@@ -210,12 +210,11 @@ const Sidebar = () => {
             <MenuButton variant={'unstyled'} as={Button}>
               <Icon as={ChevronDownIcon} />
             </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => logOut()}>Log Out</MenuItem>
-              <MenuItem>Create a Copy</MenuItem>
-              <MenuItem>Mark as Draft</MenuItem>
-              <MenuItem>Delete</MenuItem>
-              <MenuItem>Attend a Workshop</MenuItem>
+            <MenuList bg={bg1}>
+              <MenuItem bg={bg1}>Profile</MenuItem>
+              <MenuItem bg={bg1} onClick={() => logOut()}>
+                Log Out
+              </MenuItem>
             </MenuList>
           </Menu>
         </Box>

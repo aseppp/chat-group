@@ -1,22 +1,22 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { getUser } from '@/utils';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 export const UserContext = createContext();
 export const UserContextProvider = ({ children }) => {
-  const user = getUser();
   const [userData, setUserData] = useState();
 
-  const data = useMemo(() => {
-    return [userData, setUserData];
-  }, [userData, setUserData]);
-
   useEffect(() => {
-    if (user) {
-      setUserData(user);
-    }
-  }, [user]);
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const data = JSON.parse(localStorage.getItem('userData'));
 
-  return <UserContext.Provider value={data}>{children}</UserContext.Provider>;
+      setUserData(data);
+    }
+  }, [setUserData]);
+
+  return (
+    <UserContext.Provider value={[userData, setUserData]}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export const useUserContext = () => {
