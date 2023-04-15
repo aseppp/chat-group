@@ -1,12 +1,14 @@
-export const setToken = token => {
+export const setToken = (token) => {
   return localStorage.setItem('token', token);
 };
 
-export const getToken = token => {
-  return localStorage.getItem('token');
+export const getToken = (token) => {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('token');
+  }
 };
 
-export const setUser = data => {
+export const setUser = (data) => {
   return localStorage.setItem('userData', data);
 };
 

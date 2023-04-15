@@ -2,12 +2,12 @@ import { mode } from '@chakra-ui/theme-tools';
 import { extendTheme } from '@chakra-ui/react';
 
 const config = {
-  initialColorMode: 'light',
+  initialColorMode: 'dark',
   useSystemColorMode: true,
 };
 
 const styles = {
-  global: props => ({
+  global: (props) => ({
     body: {
       bg: mode('#F4F4F4', '#33333')(props),
     },

@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -16,16 +15,20 @@ import {
   Button,
   useDisclosure,
 } from '@chakra-ui/react';
+import React, { useContext, useEffect, useState } from 'react';
 import { BiPlus, BiSearchAlt } from 'react-icons/bi';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import ModalAdd from '../Modal/ModalAdd';
 import Channel from '../Channel/Channel';
-import { getUser } from '@/utils';
+import { useUserContext } from '@/pages/context';
+import { useRouter } from 'next/router';
 
 const Sidebar = () => {
+  const router = useRouter();
   const [id, setId] = useState(null);
   const [data, setData] = useState();
+  const [userData] = useUserContext();
   const [dataChannel, setDataChannel] = useState(null);
   const [openDetail, setOpenDetail] = useState(false);
   const [participants, setParticipants] = useState([]);
@@ -33,12 +36,10 @@ const Sidebar = () => {
   const bg2 = useColorModeValue('gray.200', '#0B090C');
   const modal = useDisclosure();
 
-  const userData = getUser();
-
   useEffect(() => {
     fetch('http://localhost:5000/channels')
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setData(data.result.channels);
       });
   }, [setData]);
@@ -46,9 +47,9 @@ const Sidebar = () => {
   useEffect(() => {
     if (openDetail) {
       fetch(`http://localhost:5000/participants/${id}`)
-        .then(res => res.json())
-        .then(data => {
-          setParticipants(data.result.participant);
+        .then((res) => res.json())
+        .then((data) => {
+          setParticipants(data?.result?.participant);
         });
     }
   }, [openDetail]);
@@ -56,34 +57,40 @@ const Sidebar = () => {
   useEffect(() => {
     if (openDetail) {
       fetch(`http://localhost:5000/channel/${id}`)
-        .then(res => res.json())
-        .then(data => {
-          setDataChannel(data.result.channel);
+        .then((res) => res.json())
+        .then((data) => {
+          setDataChannel(data?.result?.channel);
         });
     }
   }, [openDetail]);
 
-  console.log({ data, participants });
+  const logOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userData');
+    router.push('/auth');
+  };
+
+  console.log({ data, participants, userData });
 
   return (
     <>
-      <Box width={'xs'} position="relative">
+      <Box width={'xs'} position='relative'>
         {openDetail ? (
           <Flex
             alignItems={'center'}
             px={3}
             py={3}
             bg={bg1}
-            shadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+            shadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
             position={'absolute'}
-            width="100%"
+            width='100%'
             zIndex={20}
             gap={5}
           >
             <Box
               onClick={() => setOpenDetail(false)}
-              display="flex"
-              alignItems="center"
+              display='flex'
+              alignItems='center'
             >
               <Icon as={MdArrowBackIosNew} />
             </Box>
@@ -95,13 +102,13 @@ const Sidebar = () => {
         ) : (
           <Flex
             alignItems={'center'}
-            justifyContent="space-between"
+            justifyContent='space-between'
             px={3}
             py={3}
             bg={bg1}
-            shadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+            shadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
             position={'absolute'}
-            width="100%"
+            width='100%'
             zIndex={20}
           >
             <Text fontWeight={'bold'} lineHeight={'25px'}>
@@ -118,8 +125,8 @@ const Sidebar = () => {
           pt={20}
           px={8}
           bg={bg1}
-          width="100%"
-          h="100vh"
+          width='100%'
+          h='100vh'
           position={'absolute'}
           zIndex={10}
         >
@@ -133,38 +140,38 @@ const Sidebar = () => {
             <>
               <InputGroup>
                 <InputLeftElement
-                  pointerEvents="none"
+                  pointerEvents='none'
                   children={<BiSearchAlt />}
                 />
-                <Input placeholder="Search" bg="#3C393F" />
+                <Input placeholder='Search' bg='#3C393F' />
               </InputGroup>
 
               <Box mt={10}>
                 {data?.length > 0 ? (
-                  <Box display="flex" flexDirection="column" gap={8}>
+                  <Box display='flex' flexDirection='column' gap={8}>
                     {data.map((item, key) => (
                       <Box
                         key={key}
-                        display="flex"
-                        alignItems="center"
+                        display='flex'
+                        alignItems='center'
                         gap={5}
-                        cursor="pointer"
+                        cursor='pointer'
                         onClick={() => {
                           setId(item.id);
                           setOpenDetail(true);
                         }}
                       >
                         <Image
-                          borderRadius="7px"
-                          boxSize="40px"
-                          src="https://bit.ly/dan-abramov"
-                          alt="Dan Abramov"
+                          borderRadius='7px'
+                          boxSize='40px'
+                          src='https://bit.ly/dan-abramov'
+                          alt='Dan Abramov'
                         />
 
                         <Text
                           fontSize={'md'}
-                          textTransform="uppercase"
-                          fontWeight="medium"
+                          textTransform='uppercase'
+                          fontWeight='medium'
                         >
                           {item.title}
                         </Text>
@@ -179,25 +186,24 @@ const Sidebar = () => {
 
         <Box
           position={'fixed'}
-          zIndex="10"
+          zIndex='10'
           padding={3}
           bottom={0}
-          width="xs"
+          width='xs'
           display={'flex'}
-          justifyContent="space-between"
-          alignItems="center"
+          justifyContent='space-between'
+          alignItems='center'
           bg={bg2}
         >
-          <Box display={'flex'} gap={5} alignItems="center">
+          <Box display={'flex'} gap={5} alignItems='center'>
             <Image
-              borderRadius="7px"
-              boxSize="40px"
-              // src={userData.avatar}
-              src="https://bit.ly/dan-abramov"
-              alt="Dan Abramov"
+              borderRadius='7px'
+              boxSize='40px'
+              src={userData?.avatar}
+              alt='Dan Abramov'
             />
 
-            <Text>username</Text>
+            <Text>{userData?.username}</Text>
           </Box>
 
           <Menu>
@@ -205,7 +211,7 @@ const Sidebar = () => {
               <Icon as={ChevronDownIcon} />
             </MenuButton>
             <MenuList>
-              <MenuItem>Download</MenuItem>
+              <MenuItem onClick={() => logOut()}>Log Out</MenuItem>
               <MenuItem>Create a Copy</MenuItem>
               <MenuItem>Mark as Draft</MenuItem>
               <MenuItem>Delete</MenuItem>
