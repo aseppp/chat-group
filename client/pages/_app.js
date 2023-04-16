@@ -2,7 +2,6 @@ import { ChakraProvider } from '@chakra-ui/react';
 import '@/styles/globals.css';
 import Layout from './layout';
 import theme from '@/styles/theme.js';
-import { UserContextProvider } from './context';
 import { Provider } from 'react-redux';
 import { store } from '@/app/store';
 import { persistStore } from 'redux-persist';
@@ -15,11 +14,9 @@ function MyApp({ Component, pageProps }) {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <ChakraProvider theme={theme}>
-          <UserContextProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </UserContextProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </ChakraProvider>
       </PersistGate>
     </Provider>
