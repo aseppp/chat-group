@@ -16,31 +16,37 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
+import ModalAdd from '../Modal/ModalAdd';
+import Channel from '../Channel/Channel';
+import { useRouter } from 'next/router';
 import { BiPlus, BiSearchAlt } from 'react-icons/bi';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import ModalAdd from '../Modal/ModalAdd';
-import Channel from '../Channel/Channel';
-import { useUserContext } from '@/pages/context';
-import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearUser } from '@/app/features/userSlice';
+import { loadData, loadDatas } from '@/app/features/channelSlice';
 
 const Sidebar = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [id, setId] = useState(null);
   const [data, setData] = useState();
-  const [userData] = useUserContext();
   const [dataChannel, setDataChannel] = useState(null);
   const [openDetail, setOpenDetail] = useState(false);
   const [participants, setParticipants] = useState([]);
+
   const bg1 = useColorModeValue('gray.200', '#120F13');
   const bg2 = useColorModeValue('gray.200', '#0B090C');
   const modal = useDisclosure();
+
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     fetch('http://localhost:5000/channels')
       .then((res) => res.json())
       .then((data) => {
         setData(data.result.channels);
+        dispatch(loadDatas(data.result.channels));
       });
   }, [setData]);
 
@@ -60,13 +66,14 @@ const Sidebar = () => {
         .then((res) => res.json())
         .then((data) => {
           setDataChannel(data?.result?.channel);
+          dispatch(loadData(data.result.channel));
         });
     }
   }, [openDetail]);
 
   const logOut = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('userData');
+    dispatch(clearUser());
     router.push('/auth');
   };
 
@@ -162,8 +169,8 @@ const Sidebar = () => {
                         <Image
                           borderRadius='7px'
                           boxSize='40px'
-                          src='https://bit.ly/dan-abramov'
-                          alt='Dan Abramov'
+                          src='https://img.icons8.com/external-anggara-filled-outline-anggara-putra/32/null/external-group-communication-anggara-filled-outline-anggara-putra-2.png'
+                          alt=''
                         />
 
                         <Text
@@ -197,11 +204,11 @@ const Sidebar = () => {
             <Image
               borderRadius='7px'
               boxSize='40px'
-              src={userData?.avatar}
-              alt='Dan Abramov'
+              src={user.user.avatar}
+              alt=''
             />
 
-            <Text>{userData?.username}</Text>
+            <Text>{user.user.username}</Text>
           </Box>
 
           <Menu>

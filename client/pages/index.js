@@ -1,10 +1,19 @@
 import React from 'react';
 import Head from 'next/head';
-import { Box } from '@chakra-ui/layout';
-import { useColorModeValue } from '@chakra-ui/color-mode';
 import Header from '@/components/Header/Header';
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 
 export default function Home() {
+  const channel = useSelector((state) => state.channel);
   const bg2 = useColorModeValue('gray.200', '#252329');
 
   return (
@@ -16,8 +25,37 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Box pos={'absolute'} width='100%' pl={'320px'} height='100vh' bg={bg2}>
-        <Header />
+      <Box width='100%' pl={'320px'} bg={bg2}>
+        <Box
+          display='flex'
+          flexDirection='column'
+          justifyContent='space-between'
+          height='100vh'
+        >
+          <Box>
+            <Header title={channel?.dataById?.title} />
+          </Box>
+
+          <Box px={10} flex={1} py={10}>
+            <Text>Message</Text>
+          </Box>
+
+          <Box pb={8} px={10}>
+            <InputGroup size='lg'>
+              <Input
+                pr='4.5rem'
+                placeholder='Enter password'
+                bg={'#3C393F'}
+                border='none'
+                fontSize={'sm'}
+              />
+
+              <InputRightElement width='4.5rem'>
+                <Button size='sm'>Send</Button>
+              </InputRightElement>
+            </InputGroup>
+          </Box>
+        </Box>
       </Box>
     </>
   );
