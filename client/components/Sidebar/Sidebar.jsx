@@ -70,8 +70,6 @@ const Sidebar = () => {
     router.push('/auth');
   };
 
-  console.log({ data, participants, userData });
-
   return (
     <>
       <Box width={'xs'} position='relative'>
@@ -210,9 +208,11 @@ const Sidebar = () => {
             <MenuButton variant={'unstyled'} as={Button}>
               <Icon as={ChevronDownIcon} />
             </MenuButton>
-            <MenuList bg={bg1}>
-              <MenuItem bg={bg1}>Profile</MenuItem>
-              <MenuItem bg={bg1} onClick={() => logOut()}>
+            <MenuList bg={bg2}>
+              <MenuItem bg={bg2} _hover={{ bg: bg1 }}>
+                Profile
+              </MenuItem>
+              <MenuItem bg={bg2} _hover={{ bg: bg1 }} onClick={() => logOut()}>
                 Log Out
               </MenuItem>
             </MenuList>

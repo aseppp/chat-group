@@ -8,14 +8,14 @@ const Header = ({ title }) => {
   return (
     <Flex
       alignItems={'center'}
-      justifyContent="space-between"
+      justifyContent='space-between'
       px={10}
       py={3}
       bg={bg2}
-      shadow="0px 4px 4px rgba(0, 0, 0, 0.25)"
+      shadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
     >
       <Text fontWeight={'medium'} lineHeight={'25px'}>
-        {title}
+        {title ? title : 'Chat Group App'}
       </Text>
     </Flex>
   );

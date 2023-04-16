@@ -8,7 +8,6 @@ import {
   Container,
   FormControl,
   FormLabel,
-  // getToken,
   Input,
   Text,
   useColorModeValue,
@@ -16,11 +15,9 @@ import {
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { setToken, setUser } from '@/utils';
-// import { useUserContext } from '../context';
 
 const Index = () => {
   const router = useRouter();
-  // const [userData, setUserData] = useUserContext();
   const [open, setOpen] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
   const bg = useColorModeValue('white', '#1d1d1d');
@@ -57,7 +54,6 @@ const Index = () => {
         .then((data) => {
           setToken(data.result.token);
           setUser(JSON.stringify(data.result.user));
-          // setUserData(data.result.user);
           router.push('/');
         });
     }
