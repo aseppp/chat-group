@@ -10,7 +10,7 @@ const Header = ({ title }) => {
       alignItems={'center'}
       justifyContent='space-between'
       px={10}
-      py={3}
+      height={'14'}
       bg={bg2}
       shadow='0px 4px 4px rgba(0, 0, 0, 0.25)'
     >
@@ -21,7 +21,7 @@ const Header = ({ title }) => {
       </Box>
 
       <Box>
-        <Button>Join</Button>
+        <Button size={'sm'}>Join</Button>
       </Box>
     </Flex>
   );
