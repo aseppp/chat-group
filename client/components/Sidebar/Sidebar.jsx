@@ -40,6 +40,7 @@ const Sidebar = () => {
   const modal = useDisclosure();
 
   const user = useSelector((state) => state.user);
+  const channel = useSelector((state) => state.channel);
 
   useEffect(() => {
     fetch('http://localhost:5000/channels')
@@ -48,7 +49,7 @@ const Sidebar = () => {
         setData(data.result.channels);
         dispatch(loadDatas(data.result.channels));
       });
-  }, [setData]);
+  }, [setData, channel.isAdd]);
 
   useEffect(() => {
     if (openDetail) {
@@ -169,7 +170,7 @@ const Sidebar = () => {
                         <Image
                           borderRadius='7px'
                           boxSize='40px'
-                          src='https://img.icons8.com/external-anggara-filled-outline-anggara-putra/32/null/external-group-communication-anggara-filled-outline-anggara-putra-2.png'
+                          src={`https://ui-avatars.com/api/?background=3C393F&color=ffff&name=${item.title}`}
                           alt=''
                         />
 

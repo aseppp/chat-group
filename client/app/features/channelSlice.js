@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   data: null,
   dataById: null,
+  isAdd: null,
 };
 
 export const channelSlice = createSlice({
@@ -15,10 +16,16 @@ export const channelSlice = createSlice({
     loadData: (state, action) => {
       state.dataById = action.payload;
     },
+    onAdd: (state) => {
+      state.isAdd = true;
+    },
+    clear: (state) => {
+      state.isAdd = false;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { loadDatas, loadData } = channelSlice.actions;
+export const { loadDatas, loadData, onAdd, clear } = channelSlice.actions;
 
 export default channelSlice.reducer;
