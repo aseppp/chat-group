@@ -11,6 +11,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
+import Message from '@/components/Message/Message';
 
 export default function Home() {
   const channel = useSelector((state) => state.channel);
@@ -36,11 +37,17 @@ export default function Home() {
             <Header title={channel?.dataById?.title} />
           </Box>
 
-          <Box px={10} flex={1} py={10}>
-            <Text>Message</Text>
+          <Box
+            px={10}
+            flex={1}
+            py={10}
+            display={'flex'}
+            alignItems={'flex-end'}
+          >
+            <Message />
           </Box>
 
-          <Box pb={8} px={10}>
+          <Box pb={8} px={9}>
             <InputGroup size='lg'>
               <Input
                 pr='4.5rem'
