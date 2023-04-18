@@ -102,6 +102,7 @@ const getChannel = async (request, h) => {
             text: true,
           },
         },
+        users: true,
       },
     });
 
