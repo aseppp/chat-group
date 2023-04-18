@@ -33,7 +33,8 @@ const Sidebar = () => {
   const [data, setData] = useState();
   const [dataChannel, setDataChannel] = useState(null);
   const [openDetail, setOpenDetail] = useState(false);
-  const [participants, setParticipants] = useState([]);
+  const [participants, setParticipants] = useState(null);
+  const [isJoin, setIsJoin] = useState(false);
 
   const bg1 = useColorModeValue('gray.200', '#120F13');
   const bg2 = useColorModeValue('gray.200', '#0B090C');
@@ -41,6 +42,25 @@ const Sidebar = () => {
 
   const user = useSelector((state) => state.user);
   const channel = useSelector((state) => state.channel);
+
+  const onSubmit = async () => {
+    const data = {
+      userId: user.user.id,
+      channelId: dataChannel?.id,
+    };
+
+    await fetch('http://localhost:5000/participant', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        setIsJoin(true);
+      })
+      .catch(() => {
+        setIsJoin(false);
+      });
+  };
 
   useEffect(() => {
     fetch('http://localhost:5000/channels')
@@ -59,7 +79,7 @@ const Sidebar = () => {
           setParticipants(data?.result?.participant);
         });
     }
-  }, [openDetail]);
+  }, [openDetail, isJoin]);
 
   useEffect(() => {
     if (openDetail) {
@@ -71,6 +91,25 @@ const Sidebar = () => {
         });
     }
   }, [openDetail]);
+
+  useEffect(() => {
+    const userId = user.user.id;
+    let userList = [];
+
+    if (participants) {
+      for (let i = 0; i < participants.length; i++) {
+        userList.push(participants[i].userId);
+      }
+
+      if (userList.includes(userId)) {
+        return;
+      } else {
+        if (dataChannel) {
+          onSubmit();
+        }
+      }
+    }
+  }, [participants, dataChannel]);
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -94,7 +133,10 @@ const Sidebar = () => {
             gap={5}
           >
             <Box
-              onClick={() => setOpenDetail(false)}
+              onClick={() => {
+                setOpenDetail(false);
+                setDataChannel(null);
+              }}
               display='flex'
               alignItems='center'
             >
@@ -165,6 +207,7 @@ const Sidebar = () => {
                         onClick={() => {
                           setId(item.id);
                           setOpenDetail(true);
+                          // joinChannel();
                         }}
                       >
                         <Image

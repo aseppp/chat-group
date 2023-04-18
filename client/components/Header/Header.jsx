@@ -1,6 +1,6 @@
 import React from 'react';
 import { useColorModeValue } from '@chakra-ui/color-mode';
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 
 const Header = ({ title }) => {
   const bg2 = useColorModeValue('gray.200', '#252329');
@@ -20,9 +20,9 @@ const Header = ({ title }) => {
         </Text>
       </Box>
 
-      <Box>
+      {/* <Box>
         <Button size={'sm'}>Join</Button>
-      </Box>
+      </Box> */}
     </Flex>
   );
 };
