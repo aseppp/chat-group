@@ -33,7 +33,6 @@ const Sidebar = () => {
   const [data, setData] = useState();
   const [dataChannel, setDataChannel] = useState(null);
   const [openDetail, setOpenDetail] = useState(false);
-  const [participants, setParticipants] = useState(null);
   const [isJoin, setIsJoin] = useState(false);
 
   const bg1 = useColorModeValue('gray.200', '#120F13');
@@ -73,16 +72,6 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (openDetail) {
-      fetch(`http://localhost:5000/participants/${id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setParticipants(data?.result?.participant);
-        });
-    }
-  }, [openDetail, isJoin]);
-
-  useEffect(() => {
-    if (openDetail) {
       fetch(`http://localhost:5000/channel/${id}`)
         .then((res) => res.json())
         .then((data) => {
@@ -90,15 +79,16 @@ const Sidebar = () => {
           dispatch(loadData(data.result.channel));
         });
     }
-  }, [openDetail]);
+  }, [openDetail, isJoin]);
 
   useEffect(() => {
     const userId = user.user.id;
     let userList = [];
 
-    if (participants) {
-      for (let i = 0; i < participants.length; i++) {
-        userList.push(participants[i].userId);
+    if (dataChannel) {
+      for (let i = 0; i < dataChannel?.users?.length; i++) {
+        // console.log(dataChannel?.users[i].userId);
+        userList.push(dataChannel?.users[i].userId);
       }
 
       if (userList.includes(userId)) {
@@ -109,7 +99,7 @@ const Sidebar = () => {
         }
       }
     }
-  }, [participants, dataChannel]);
+  }, [dataChannel]);
 
   const logOut = () => {
     localStorage.removeItem('token');
@@ -182,7 +172,7 @@ const Sidebar = () => {
             <Channel
               title={dataChannel?.title}
               description={dataChannel?.description}
-              members={participants}
+              members={dataChannel?.users}
             />
           ) : (
             <>

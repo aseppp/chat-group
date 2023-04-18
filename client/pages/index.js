@@ -7,7 +7,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Text,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
