@@ -44,10 +44,10 @@ model Participant {
 model Message {
   id        String   @id @default(cuid())
   text      String
-  authorId  String
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  authorId  String  
+  author    User     @relation(fields: [authorId], references: [id])
   channelId String
-  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  channel   Channel  @relation(fields: [channelId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

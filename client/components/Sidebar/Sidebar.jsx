@@ -25,6 +25,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '@/app/features/userSlice';
 import { loadData, loadDatas } from '@/app/features/channelSlice';
+import { clearMessage, loadMessage } from '@/app/features/messageSlice';
 
 const Sidebar = () => {
   const router = useRouter();
@@ -48,7 +49,7 @@ const Sidebar = () => {
       channelId: dataChannel?.id,
     };
 
-    await fetch(`${process.env.NEXT_APP_BASE_URL}/participant`, {
+    await fetch(`${process.env.NEXT_APP_BASE_URL}/api/participant`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -62,7 +63,7 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_APP_BASE_URL}/channels`)
+    fetch(`${process.env.NEXT_APP_BASE_URL}/api/channels`)
       .then((res) => res.json())
       .then((data) => {
         setData(data.result.channels);
@@ -72,14 +73,15 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (openDetail) {
-      fetch(`${process.env.NEXT_APP_BASE_URL}/channel/${id}`)
+      fetch(`${process.env.NEXT_APP_BASE_URL}/api/channel/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setDataChannel(data?.result?.channel);
           dispatch(loadData(data.result.channel));
+          dispatch(loadMessage(data.result.channel.messages));
         });
     }
-  }, [openDetail, isJoin]);
+  }, [openDetail, isJoin, channel.isAdd]);
 
   useEffect(() => {
     const userId = user.user.id;
@@ -127,6 +129,7 @@ const Sidebar = () => {
               onClick={() => {
                 setOpenDetail(false);
                 setDataChannel(null);
+                dispatch(clearMessage());
               }}
               display='flex'
               alignItems='center'

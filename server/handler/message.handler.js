@@ -8,8 +8,8 @@ const sendMessage = async (request, response) => {
     const message = await prisma.message.create({
       data: {
         text: text,
-        authorId: authorId,
-        channelId: channelId,
+        author: { connect: { id: authorId } },
+        channel: { connect: { id: channelId } },
       },
     });
 

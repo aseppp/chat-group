@@ -30,7 +30,7 @@ const ModalAdd = ({ isOpen, onClose }) => {
     };
 
     if (title && desc !== '') {
-      await fetch(`${process.env.NEXT_APP_BASE_URL}/channel`, {
+      await fetch(`${process.env.NEXT_APP_BASE_URL}/api/channel`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -39,7 +39,7 @@ const ModalAdd = ({ isOpen, onClose }) => {
       });
     }
 
-    console.log(data);
+    // console.log(data);
   };
 
   return (
