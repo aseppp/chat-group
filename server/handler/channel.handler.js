@@ -1,8 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const createChannel = async (request, h) => {
-  const { title, description } = request.payload;
+const createChannel = async (req, res) => {
+  const { title, description } = req.body;
 
   try {
     const existChannel = await prisma.channel.findFirst({
@@ -12,12 +12,10 @@ const createChannel = async (request, h) => {
     });
 
     if (existChannel) {
-      return h
-        .response({
-          status: 'failed',
-          message: 'channel name already exist',
-        })
-        .code(400);
+      res.status(400).send({
+        status: 'failed',
+        message: 'channel name already exist',
+      });
     }
 
     const newChannel = await prisma.channel.create({
@@ -27,27 +25,23 @@ const createChannel = async (request, h) => {
       },
     });
 
-    return h
-      .response({
-        status: 'sucess',
-        message: 'channel created',
-        result: {
-          newChannel,
-        },
-      })
-      .code(201);
+    res.status(201).send({
+      status: 'sucess',
+      message: 'channel created',
+      result: {
+        newChannel,
+      },
+    });
   } catch (error) {
     console.log(error);
-    return h
-      .response({
-        status: 'error',
-        message: 'server error!',
-      })
-      .code(500);
+    res.status(500).send({
+      status: 'error',
+      message: 'server error!',
+    });
   }
 };
 
-const getChannels = async (request, h) => {
+const getChannels = async (request, response) => {
   try {
     const channels = await prisma.channel.findMany({
       include: {
@@ -57,31 +51,30 @@ const getChannels = async (request, h) => {
             channel: true,
           },
         },
-        // channel: true,
       },
     });
 
-    return h
-      .response({
+    response
+      .send({
         status: 'sucess',
         message: 'success fetching data',
         result: {
           channels,
         },
       })
-      .code(200);
+      .status(200);
   } catch (error) {
     console.log(error);
-    return h
-      .response({
+    return response
+      .send({
         status: 'error',
         message: 'server error!',
       })
-      .code(500);
+      .status(500);
   }
 };
 
-const getChannel = async (request, h) => {
+const getChannel = async (request, response) => {
   const { id } = request.params;
 
   try {
@@ -111,27 +104,23 @@ const getChannel = async (request, h) => {
       },
     });
 
-    return h
-      .response({
-        status: 'sucess',
-        message: 'success fetching data',
-        result: {
-          channel,
-        },
-      })
-      .code(200);
+    response.status(200).send({
+      status: 'sucess',
+      message: 'success fetching data',
+      result: {
+        channel,
+      },
+    });
   } catch (error) {
     console.log(error);
-    return h
-      .response({
-        status: 'error',
-        message: 'server error!',
-      })
-      .code(500);
+    response.status(500).send({
+      status: 'error',
+      message: 'server error!',
+    });
   }
 };
 
-const deleteChannel = async (request, h) => {
+const deleteChannel = async (request, response) => {
   const { id } = request.params;
 
   try {
@@ -140,8 +129,8 @@ const deleteChannel = async (request, h) => {
         id: id,
       },
     });
-    return h
-      .response({
+    return response
+      .send({
         status: 'sucess',
         message: 'success delete data',
         result: {
@@ -151,8 +140,8 @@ const deleteChannel = async (request, h) => {
       .code(200);
   } catch (error) {
     console.log(error);
-    return h
-      .response({
+    return response
+      .send({
         status: 'error',
         message: 'server error!',
       })
@@ -160,9 +149,9 @@ const deleteChannel = async (request, h) => {
   }
 };
 
-const updateChannel = async (request, h) => {
+const updateChannel = async (request, response) => {
   const { id } = request.params;
-  const { title, description } = request.payload;
+  const { title, description } = request.body;
 
   try {
     const channel = await prisma.channel.update({
@@ -175,8 +164,8 @@ const updateChannel = async (request, h) => {
       },
     });
 
-    return h
-      .response({
+    return response
+      .send({
         status: 'sucess',
         message: 'success update data',
         result: {
@@ -186,8 +175,8 @@ const updateChannel = async (request, h) => {
       .code(201);
   } catch (error) {
     console.log(error);
-    return h
-      .response({
+    return response
+      .send({
         status: 'error',
         message: 'server error!',
       })

@@ -36,7 +36,7 @@ const Index = () => {
     };
 
     if (open) {
-      await fetch('http://localhost:5000/signUp', {
+      await fetch(`${process.env.NEXT_APP_BASE_URL}/signUp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -48,7 +48,7 @@ const Index = () => {
     }
 
     if (!open) {
-      await fetch('http://localhost:5000/signIn', {
+      await fetch(`${process.env.NEXT_APP_BASE_URL}/signIn`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

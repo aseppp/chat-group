@@ -48,7 +48,7 @@ const Sidebar = () => {
       channelId: dataChannel?.id,
     };
 
-    await fetch('http://localhost:5000/participant', {
+    await fetch(`${process.env.NEXT_APP_BASE_URL}/participant`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -62,7 +62,7 @@ const Sidebar = () => {
   };
 
   useEffect(() => {
-    fetch('http://localhost:5000/channels')
+    fetch(`${process.env.NEXT_APP_BASE_URL}/channels`)
       .then((res) => res.json())
       .then((data) => {
         setData(data.result.channels);
@@ -72,7 +72,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (openDetail) {
-      fetch(`http://localhost:5000/channel/${id}`)
+      fetch(`${process.env.NEXT_APP_BASE_URL}/channel/${id}`)
         .then((res) => res.json())
         .then((data) => {
           setDataChannel(data?.result?.channel);
@@ -103,6 +103,7 @@ const Sidebar = () => {
 
   const logOut = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('persist:root');
     dispatch(clearUser());
     router.push('/auth');
   };
@@ -197,7 +198,6 @@ const Sidebar = () => {
                         onClick={() => {
                           setId(item.id);
                           setOpenDetail(true);
-                          // joinChannel();
                         }}
                       >
                         <Image
@@ -238,7 +238,7 @@ const Sidebar = () => {
             <Image
               borderRadius='7px'
               boxSize='40px'
-              src={user.user.avatar}
+              src={`https://ui-avatars.com/api/?background=3C393F&color=ffff&name=${user.user.username}`}
               alt=''
             />
 

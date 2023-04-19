@@ -3,8 +3,8 @@ const prisma = new PrismaClient();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-const signUp = async (request, h) => {
-  const { username, email, password, avatar } = request.payload;
+const signUp = async (request, response) => {
+  const { username, email, password, avatar } = request.body;
 
   try {
     const existUser = await prisma.user.findUnique({
@@ -14,12 +14,10 @@ const signUp = async (request, h) => {
     });
 
     if (existUser) {
-      const response = h.response({
+      response.status(400).send({
         status: 'failed',
         message: 'user already exist ',
       });
-      response.code(400);
-      return response;
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -34,26 +32,21 @@ const signUp = async (request, h) => {
       },
     });
 
-    const response = h.response({
+    response.status(200).send({
       status: 'sucess',
       message: 'sign up success',
     });
-    response.code(201);
-    return response;
   } catch (error) {
     console.log(error);
-    const response = h.response({
+    response.status(500).send({
       status: 'failed',
       message: 'server error!',
     });
-
-    response(500);
-    return response;
   }
 };
 
-const signIn = async (request, h) => {
-  const { email, password } = request.payload;
+const signIn = async (request, response) => {
+  const { email, password } = request.body;
 
   try {
     const existUser = await prisma.user.findUnique({
@@ -63,43 +56,34 @@ const signIn = async (request, h) => {
     });
 
     if (!existUser) {
-      const response = h.response({
+      response.status(400).send({
         status: 'failed',
         message: 'user not found ',
       });
-      response.code(400);
-      return response;
     }
 
     const compare = await bcrypt.compare(password, existUser.password);
     if (!compare) {
-      return h
-        .response({
-          status: 'failed',
-          message: 'wrong password',
-        })
-        .code(400);
+      response.status(400).send({
+        status: 'failed',
+        message: 'wrong password',
+      });
     }
 
     const token = jwt.sign(existUser.id, process.env.SECRET);
 
     const result = { user: existUser, token: token };
-    const response = h.response({
+    response.status(200).send({
       status: 'sucess',
       message: 'sign in success',
       result: result,
     });
-    response.code(200);
-    return response;
   } catch (error) {
     console.log(error);
-    const response = h.response({
+    response.status(500).send({
       status: 'failed',
       message: 'server error!',
     });
-
-    response(500);
-    return response;
   }
 };
 

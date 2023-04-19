@@ -5,7 +5,7 @@ const Channel = ({ title, description, members }) => {
   return (
     <>
       <Box>
-        <Text mb={5} textTransform="uppercase" fontWeight={'bold'}>
+        <Text mb={5} textTransform='uppercase' fontWeight={'bold'}>
           {title}
         </Text>
         <Text>{description}</Text>
@@ -14,20 +14,20 @@ const Channel = ({ title, description, members }) => {
           <Text>MEMBERS</Text>
 
           {members?.length > 0 ? (
-            <Box mt={5} display="flex" flexDirection="column" gap={5}>
+            <Box mt={5} display='flex' flexDirection='column' gap={5}>
               {members?.map((item, key) => (
-                <Box key={key} display="flex" alignItems="center" gap={5}>
+                <Box key={key} display='flex' alignItems='center' gap={5}>
                   <Image
-                    borderRadius="7px"
-                    boxSize="40px"
-                    src={item.user.avatar}
-                    alt=""
+                    borderRadius='7px'
+                    boxSize='40px'
+                    src={`https://ui-avatars.com/api/?background=3C393F&color=ffff&name=${item.user.username}`}
+                    alt=''
                   />
 
                   <Text
                     fontSize={'md'}
-                    textTransform="capitalize"
-                    fontWeight="bold"
+                    textTransform='capitalize'
+                    fontWeight='bold'
                   >
                     {item.user.username}
                   </Text>
@@ -35,7 +35,7 @@ const Channel = ({ title, description, members }) => {
               ))}
             </Box>
           ) : (
-            <Text mt={'56'} fontWeight="bold">
+            <Text mt={'56'} fontWeight='bold'>
               No members in this channel
             </Text>
           )}

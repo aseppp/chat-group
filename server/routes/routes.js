@@ -1,4 +1,10 @@
+const express = require('express');
+const routes = express.Router();
+
 const { signUp, signIn } = require('../handler/auth.handler');
+routes.post('/signUp', signUp);
+routes.post('/signIn', signIn);
+
 const {
   createChannel,
   getChannels,
@@ -6,87 +12,26 @@ const {
   updateChannel,
   deleteChannel,
 } = require('../handler/channel.handler');
+
+routes.post('/channel', createChannel);
+routes.get('/channels', getChannels);
+routes.get('/channel/:id', getChannel);
+routes.patch('/channel/:id', updateChannel);
+routes.delete('/channel/:id', deleteChannel);
+
 const { sendMessage, deleteMessage } = require('../handler/message.handler');
+routes.post('/message', sendMessage);
+routes.post('/message/:id', deleteMessage);
+
 const {
   addParticipan,
   removeParticipant,
-  getParticipants,
-  getParticipantByChannel,
+  // getParticipants,
+  // getParticipantByChannel,
 } = require('../handler/participant.handler');
-
-const routes = [
-  // AUTH ROUTES
-  {
-    method: 'POST',
-    path: '/signUp',
-    handler: signUp,
-  },
-  {
-    method: 'POST',
-    path: '/signIn',
-    handler: signIn,
-  },
-
-  // CHANNEL ROUTES
-  {
-    method: 'POST',
-    path: '/channel',
-    handler: createChannel,
-  },
-  {
-    method: 'GET',
-    path: '/channels',
-    handler: getChannels,
-  },
-  {
-    method: 'GET',
-    path: '/channel/{id}',
-    handler: getChannel,
-  },
-  {
-    method: 'PATCH',
-    path: '/channel/{id}',
-    handler: updateChannel,
-  },
-  {
-    method: 'DELETE',
-    path: '/channel/{id}',
-    handler: deleteChannel,
-  },
-
-  // PARTICIPAN ROUTES
-  {
-    method: 'POST',
-    path: '/participant',
-    handler: addParticipan,
-  },
-  {
-    method: 'POST',
-    path: '/participant/leave',
-    handler: removeParticipant,
-  },
-  {
-    method: 'GET',
-    path: '/participants',
-    handler: getParticipants,
-  },
-  {
-    method: 'GET',
-    path: '/participants/{channelId}',
-    handler: getParticipantByChannel,
-  },
-
-  // MESSAGE ROUTES
-  {
-    method: 'POST',
-    path: '/message',
-    handler: sendMessage,
-  },
-  {
-    method: 'DELETE',
-    path: '/message/{id}',
-    handler: deleteMessage,
-  },
-];
+routes.post('/participant', addParticipan);
+routes.post('/participant/leave', removeParticipant);
+// routes.post('/participant', addParticipan);
+// routes.post('/participant', addParticipan);
 
 module.exports = routes;

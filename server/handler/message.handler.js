@@ -1,8 +1,8 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const sendMessage = async (request, h) => {
-  const { text, authorId, channelId } = request.payload;
+const sendMessage = async (request, response) => {
+  const { text, authorId, channelId } = request.body;
 
   try {
     const message = await prisma.message.create({
@@ -13,27 +13,23 @@ const sendMessage = async (request, h) => {
       },
     });
 
-    return h
-      .response({
-        status: 'sucess',
-        message: 'message send',
-        result: {
-          message,
-        },
-      })
-      .code(201);
+    response.status(201).send({
+      status: 'sucess',
+      message: 'message send',
+      result: {
+        message,
+      },
+    });
   } catch (error) {
     console.log(error);
-    return h
-      .response({
-        status: 'error',
-        message: 'server error!',
-      })
-      .code(500);
+    response.status(500).send({
+      status: 'error',
+      message: 'server error!',
+    });
   }
 };
 
-const deleteMessage = async (request, h) => {
+const deleteMessage = async (request, response) => {
   const { id } = request.params;
 
   try {
@@ -43,23 +39,19 @@ const deleteMessage = async (request, h) => {
       },
     });
 
-    return h
-      .response({
-        status: 'sucess',
-        message: 'message deleted',
-        result: {
-          message,
-        },
-      })
-      .code(200);
+    response.status(200).send({
+      status: 'sucess',
+      message: 'message deleted',
+      result: {
+        message,
+      },
+    });
   } catch (error) {
     console.log(error);
-    return h
-      .response({
-        status: 'error',
-        message: 'server error!',
-      })
-      .code(500);
+    response.status(500).send({
+      status: 'error',
+      message: 'server error!',
+    });
   }
 };
 

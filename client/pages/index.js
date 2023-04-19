@@ -11,6 +11,12 @@ import {
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import Message from '@/components/Message/Message';
+// import { io } from 'socket.io-client';
+
+// const socket = io('http://localhost:5000');
+// socket.on('connect', () => {
+//   console.log(socket.id);
+// });
 
 export default function Home() {
   const channel = useSelector((state) => state.channel);
