@@ -24,7 +24,7 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '@/app/features/userSlice';
-import { loadData, loadDatas } from '@/app/features/channelSlice';
+import { clear, loadData, loadDatas } from '@/app/features/channelSlice';
 import { clearMessage, loadMessage } from '@/app/features/messageSlice';
 
 const Sidebar = () => {
@@ -130,6 +130,7 @@ const Sidebar = () => {
                 setOpenDetail(false);
                 setDataChannel(null);
                 dispatch(clearMessage());
+                dispatch(clear());
               }}
               display='flex'
               alignItems='center'
@@ -241,7 +242,7 @@ const Sidebar = () => {
             <Image
               borderRadius='7px'
               boxSize='40px'
-              src={`https://ui-avatars.com/api/?background=3C393F&color=ffff&name=${user.user.username}`}
+              src={`https://ui-avatars.com/api/?background=3C393F&color=ffff&name=${user?.user?.username}`}
               alt=''
             />
 

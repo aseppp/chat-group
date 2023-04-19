@@ -21,6 +21,7 @@ export const channelSlice = createSlice({
     },
     clear: (state) => {
       state.isAdd = false;
+      state.dataById = [];
     },
   },
 });
