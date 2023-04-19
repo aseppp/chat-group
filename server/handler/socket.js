@@ -14,6 +14,9 @@ const socketIo = (io) => {
           where: {
             channelId: channelId,
           },
+          include: {
+            author: true,
+          },
         });
 
         socket.broadcast.emit('messages', data);

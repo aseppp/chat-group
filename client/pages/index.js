@@ -24,8 +24,6 @@ export default function Home() {
   const bg2 = useColorModeValue('gray.200', '#252329');
   const socket = io(process.env.NEXT_APP_BASE_URL);
 
-  // console.log(messages);
-
   useEffect(() => {
     socket.on('connect', () => {
       console.log('connected to server');
