@@ -21,6 +21,7 @@ export default function Home() {
   const user = useSelector((state) => state.user);
   const messages = useSelector((state) => state.message);
   const channel = useSelector((state) => state.channel);
+  const global = useSelector((state) => state.global);
   const bg2 = useColorModeValue('gray.200', '#252329');
   const socket = io(process.env.NEXT_APP_BASE_URL);
 
@@ -65,7 +66,7 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <Box width='100%' pl={'320px'} bg={bg2}>
+      <Box width='100%' pl={['0', '320px']} bg={bg2}>
         <Box
           display='flex'
           flexDirection='column'

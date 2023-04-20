@@ -21,11 +21,13 @@ import Channel from '../Channel/Channel';
 import { useRouter } from 'next/router';
 import { BiPlus, BiSearchAlt } from 'react-icons/bi';
 import { MdArrowBackIosNew } from 'react-icons/md';
+import { AiOutlineClose } from 'react-icons/ai';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearUser } from '@/app/features/userSlice';
 import { clear, loadData, loadDatas } from '@/app/features/channelSlice';
 import { clearMessage, loadMessage } from '@/app/features/messageSlice';
+import { onclose } from '@/app/features/globalSlice';
 
 const Sidebar = () => {
   const router = useRouter();
@@ -42,6 +44,7 @@ const Sidebar = () => {
 
   const user = useSelector((state) => state.user);
   const channel = useSelector((state) => state.channel);
+  const global = useSelector((state) => state.global);
 
   const onSubmit = async () => {
     const data = {
@@ -111,8 +114,8 @@ const Sidebar = () => {
   };
 
   return (
-    <>
-      <Box width={'xs'} position='relative'>
+    <Box display={'flex'}>
+      <Box width={'xs'} position='relative' left={global.isOpen ? 0 : '-100%'}>
         {openDetail ? (
           <Flex
             alignItems={'center'}
@@ -265,8 +268,26 @@ const Sidebar = () => {
         </Box>
       </Box>
 
+      <Box
+        position={'absolute'}
+        right={4}
+        top={2}
+        display={global.isOpen ? ['flex', 'flex', 'none'] : 'none'}
+      >
+        <Button
+          onClick={() => dispatch(onclose())}
+          variant={'unstyled'}
+          bg={'black'}
+          display={'flex'}
+          alignItems={'center'}
+          borderRadius={'12px'}
+        >
+          <Icon as={AiOutlineClose} w={5} h={5} />
+        </Button>
+      </Box>
+
       <ModalAdd isOpen={modal.isOpen} onClose={modal.onClose} />
-    </>
+    </Box>
   );
 };
 
