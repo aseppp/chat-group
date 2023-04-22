@@ -32,7 +32,7 @@ export default function Home() {
   const socketInitializer = async () => {
     await fetch('/api/socket');
 
-    const socket = io();
+    const socket = io('https://chat-group-me.vercel.app/');
 
     socket.on('connect', () => {
       console.log('connected to server');
@@ -48,7 +48,7 @@ export default function Home() {
   };
 
   const onSubmit = async () => {
-    const socket = io();
+    const socket = io('https://chat-group-me.vercel.app/');
 
     const data = {
       text: watch('text'),
