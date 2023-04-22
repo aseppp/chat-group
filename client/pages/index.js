@@ -1,6 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import Head from 'next/head';
-import Header from '@/components/Header/Header';
 import {
   Box,
   Button,
@@ -10,22 +7,33 @@ import {
   useColorModeValue,
   Text,
 } from '@chakra-ui/react';
+import React, { useEffect } from 'react';
+import Head from 'next/head';
+import Header from '@/components/Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '@/components/Message/Message';
-import { io } from 'socket.io-client';
 import { loadMessage } from '@/app/features/messageSlice';
+import { io } from 'socket.io-client';
+import { useForm } from 'react-hook-form';
 
 export default function Home() {
   const dispatch = useDispatch();
-  const [message, setMessage] = useState('');
   const user = useSelector((state) => state.user);
   const messages = useSelector((state) => state.message);
   const channel = useSelector((state) => state.channel);
-  const global = useSelector((state) => state.global);
   const bg2 = useColorModeValue('gray.200', '#252329');
-  const socket = io(process.env.NEXT_APP_BASE_URL);
+
+  const { register, watch, setValue } = useForm();
 
   useEffect(() => {
+    socketInitializer();
+  }, []);
+
+  const socketInitializer = async () => {
+    await fetch('/api/socket');
+
+    const socket = io();
+
     socket.on('connect', () => {
       console.log('connected to server');
     });
@@ -37,16 +45,18 @@ export default function Home() {
     return () => {
       socket.disconnect();
     };
-  }, []);
+  };
 
   const onSubmit = async () => {
+    const socket = io();
+
     const data = {
-      text: message,
+      text: watch('text'),
       authorId: user.user.id,
       channelId: channel.dataById.id,
     };
 
-    await fetch(`${process.env.NEXT_APP_BASE_URL}/api/message`, {
+    await fetch(`/api/message/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
@@ -55,6 +65,7 @@ export default function Home() {
     });
 
     socket.emit('load message', channel.dataById.id);
+    setValue('text', '');
   };
 
   return (
@@ -109,11 +120,15 @@ export default function Home() {
                 bg={'#3C393F'}
                 border='none'
                 fontSize={'sm'}
-                onChange={(e) => setMessage(e.target.value)}
+                {...register('text')}
               />
 
               <InputRightElement width='4.5rem'>
-                <Button onClick={() => onSubmit()} size='sm'>
+                <Button
+                  isDisabled={channel.isOpen == false}
+                  onClick={() => onSubmit()}
+                  size='sm'
+                >
                   Send
                 </Button>
               </InputRightElement>

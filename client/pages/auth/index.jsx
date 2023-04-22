@@ -36,7 +36,7 @@ const Index = () => {
     };
 
     if (open) {
-      await fetch(`${process.env.NEXT_APP_BASE_URL}/api/signUp`, {
+      await fetch(`/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -48,7 +48,7 @@ const Index = () => {
     }
 
     if (!open) {
-      await fetch(`${process.env.NEXT_APP_BASE_URL}/api/signIn`, {
+      await fetch(`/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -72,11 +72,11 @@ const Index = () => {
       </Head>
 
       <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        width='100%'
+        width={'100%'}
         height='100vh'
+        display='flex'
+        alignItems='center'
+        justifyContent='center'
       >
         <Box
           shadow='md'
@@ -88,7 +88,7 @@ const Index = () => {
           <Container w={['sm']}>
             <Text
               mb={isAdd ? 2 : 8}
-              fontSize={['lg', 'lg', '2xl', '2xl']}
+              fontSize={['xl', 'xl', '2xl', '2xl']}
               fontWeight='bold'
             >
               Authentication
@@ -136,7 +136,7 @@ const Index = () => {
               <Box mt={8}>
                 <Button
                   type='submit'
-                  bg='gray.900'
+                  bg='gray.700'
                   color={'white'}
                   width='100%'
                   _hover={{ bg: 'gray.700' }}
@@ -145,7 +145,12 @@ const Index = () => {
                 </Button>
 
                 <Box mt={5}>
-                  <Box textAlign='center'>
+                  <Box
+                    textAlign='center'
+                    display={'flex'}
+                    justifyContent={'center'}
+                    gap={2}
+                  >
                     {open ? 'Already have account ? ' : "Don't have account ? "}{' '}
                     <Box
                       onClick={() => {

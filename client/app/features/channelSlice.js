@@ -4,6 +4,7 @@ const initialState = {
   data: null,
   dataById: null,
   isAdd: null,
+  isOpen: false,
 };
 
 export const channelSlice = createSlice({
@@ -23,10 +24,17 @@ export const channelSlice = createSlice({
       state.isAdd = false;
       state.dataById = [];
     },
+    setOpen: (state) => {
+      state.isOpen = true;
+    },
+    setClose: (state) => {
+      state.isOpen = false;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { loadDatas, loadData, onAdd, clear } = channelSlice.actions;
+export const { loadDatas, loadData, onAdd, clear, setOpen, setClose } =
+  channelSlice.actions;
 
 export default channelSlice.reducer;
