@@ -13,22 +13,18 @@ export default async function handler(request, response) {
       },
     });
 
-    response
-      .send({
-        status: 'sucess',
-        message: 'success fetching data',
-        result: {
-          channels,
-        },
-      })
-      .status(200);
+    response.send({
+      status: 'sucess',
+      message: 'success fetching data',
+      result: {
+        channels,
+      },
+    });
   } catch (error) {
     // console.log(error);
-    return response
-      .send({
-        status: 'error',
-        message: 'server error!',
-      })
-      .status(500);
+    return response.send({
+      status: 'error',
+      message: 'server error!',
+    });
   }
 }
