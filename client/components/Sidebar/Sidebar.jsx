@@ -86,8 +86,8 @@ const Sidebar = () => {
         .then((res) => res.json())
         .then((data) => {
           setDataChannel(data?.result?.channel);
-          dispatch(loadData(data.result.channel));
-          dispatch(loadMessage(data.result.channel.messages));
+          dispatch(loadData(data?.result?.channel));
+          dispatch(loadMessage(data?.result?.channel?.messages));
           dispatch(setOpen());
         });
     }

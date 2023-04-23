@@ -1,7 +1,7 @@
-const { default: prisma } = require('@/lib/prismadb');
+import prisma from '@/lib/prismadb';
 
-export default async function handler(request, response) {
-  const { id } = request.body;
+export default async function handler(req, res) {
+  const { id } = req.query;
 
   try {
     const channel = await prisma.channel.findUnique({
@@ -30,7 +30,7 @@ export default async function handler(request, response) {
       },
     });
 
-    response.send({
+    res.send({
       status: 'sucess',
       message: 'success fetching data',
       result: {
@@ -39,7 +39,7 @@ export default async function handler(request, response) {
     });
   } catch (error) {
     console.log(error);
-    response.status(500).send({
+    res.send({
       status: 'error',
       message: 'server error!',
     });
