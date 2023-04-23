@@ -28,8 +28,6 @@ export default function Home() {
   const channel = useSelector((state) => state.channel);
   const bg2 = useColorModeValue('gray.200', '#252329');
 
-  console.log(channel);
-
   const { register, watch, setValue } = useForm();
 
   useEffect(() => {

@@ -85,6 +85,7 @@ const Sidebar = () => {
       fetch(`/api/channel/${id}`)
         .then((res) => res.json())
         .then((data) => {
+          // console.log(data);
           setDataChannel(data?.result?.channel);
           dispatch(loadData(data?.result?.channel));
           dispatch(loadMessage(data?.result?.channel?.messages));
