@@ -33,7 +33,7 @@ export default async function handler(request, response) {
       },
     });
 
-    response.status(201).send({
+    response.send({
       status: 'sucess',
       message: 'success fetching data',
       result: {
@@ -42,7 +42,7 @@ export default async function handler(request, response) {
     });
   } catch (error) {
     console.log(error);
-    response.status(500).send({
+    response.send({
       status: 'error',
       message: 'server error!',
     });
