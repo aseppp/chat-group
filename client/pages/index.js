@@ -17,10 +17,10 @@ import { io } from 'socket.io-client';
 import { useForm } from 'react-hook-form';
 
 export default function Home() {
-  // const socket = io('ws://https://chat-group-me.vercel.app/', {
-  //   transports: ['websocket'],
-  // });
-  const socket = io();
+  const socket = io('ws://https://chat-group-me.vercel.app/', {
+    transports: ['websocket'],
+  });
+  // const socket = io();
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
