@@ -17,7 +17,7 @@ import { io } from 'socket.io-client';
 import { useForm } from 'react-hook-form';
 
 export default function Home() {
-  const socket = io('https://chat-group-me.vercel.app', {
+  const socket = io('ws://https://chat-group-me.vercel.app', {
     transports: ['websocket'],
   });
 
