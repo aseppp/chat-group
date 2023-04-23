@@ -17,6 +17,10 @@ import { io } from 'socket.io-client';
 import { useForm } from 'react-hook-form';
 
 export default function Home() {
+  const socket = io('https://chat-group-me.vercel.app', {
+    transports: ['websocket'],
+  });
+
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const messages = useSelector((state) => state.message);
@@ -32,8 +36,6 @@ export default function Home() {
   const socketInitializer = async () => {
     await fetch('/api/socket');
 
-    const socket = io('https://chat-group-me.vercel.app/');
-
     socket.on('connect', () => {
       console.log('connected to server');
     });
@@ -48,8 +50,6 @@ export default function Home() {
   };
 
   const onSubmit = async () => {
-    const socket = io('https://chat-group-me.vercel.app/');
-
     const data = {
       text: watch('text'),
       authorId: user.user.id,
