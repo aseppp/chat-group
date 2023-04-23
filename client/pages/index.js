@@ -13,14 +13,14 @@ import Header from '@/components/Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '@/components/Message/Message';
 import { loadMessage } from '@/app/features/messageSlice';
-// import { io } from 'socket.io-client';
+import { io } from 'socket.io-client';
 import { useForm } from 'react-hook-form';
 
 export default function Home() {
   // const socket = io('ws://https://chat-group-me.vercel.app/', {
   //   transports: ['websocket'],
   // });
-  // const socket = io();
+  const socket = io();
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
@@ -31,7 +31,7 @@ export default function Home() {
   const { register, watch, setValue } = useForm();
 
   useEffect(() => {
-    // socketInitializer();
+    socketInitializer();
   }, []);
 
   const socketInitializer = async () => {
