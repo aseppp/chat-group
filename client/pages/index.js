@@ -20,7 +20,7 @@ export default function Home() {
   // const socket = io('https://chat-group-me.vercel.app/', {
   //   transports: ['websocket'],
   // });
-  const socket = io('wss://chat-group-me.vercel.app/');
+  const socket = io();
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
