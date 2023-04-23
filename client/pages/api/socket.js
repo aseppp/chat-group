@@ -5,6 +5,7 @@ const ioHandler = (req, res) => {
   if (!res.socket.server.io) {
     const io = new Server(res.socket.server, {
       cors: ['https://chat-group-me.vercel.app/'],
+      method: ['POST', 'GET'],
     });
 
     io.on('connection', (socket) => {
