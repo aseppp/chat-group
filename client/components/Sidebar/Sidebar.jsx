@@ -91,7 +91,7 @@ const Sidebar = () => {
           dispatch(setOpen());
         });
     }
-  }, [openDetail, isJoin, channel.isAdd]);
+  }, [openDetail, isJoin, channel.isOpen]);
 
   useEffect(() => {
     const userId = user.user.id;

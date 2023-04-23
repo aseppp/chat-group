@@ -17,16 +17,18 @@ import { io } from 'socket.io-client';
 import { useForm } from 'react-hook-form';
 
 export default function Home() {
-  const socket = io('ws://https://chat-group-me.vercel.app/', {
-    transports: ['websocket'],
-  });
-  // const socket = io();
+  // const socket = io('https://chat-group-me.vercel.app/', {
+  //   transports: ['websocket', 'polling'],
+  // });
+  const socket = io();
 
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const messages = useSelector((state) => state.message);
   const channel = useSelector((state) => state.channel);
   const bg2 = useColorModeValue('gray.200', '#252329');
+
+  console.log(channel);
 
   const { register, watch, setValue } = useForm();
 
